@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      window.onload = () => {
+        const button = document.getElementById('addStockBtn');
+        const inputText = document.getElementById('stockName');
+        const inputNumber = document.getElementById('stockPrice');
+        const table = document.getElementById('stockTable');
+
+        button.addEventListener('click', () => {
+          if (!(inputNumber.value.length && inputText.value.length)) {
+            alert('값을 모두 입력하세요.');
+          }
+
+          const tr = document.createElement('tr');
+          const td1 = document.createElement('td');
+          const td2 = document.createElement('td');
+
+          td1.textContent = inputText.value;
+          td2.textContent = inputNumber.value;
+
+          tr.appendChild(td1);
+          tr.appendChild(td2);
+
+          table.appendChild(tr);
+
+          inputText.value = '';
+          inputNumber.value = '';
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <input type="text" id="stockName" placeholder="종목명" />
+    <input type="number" id="stockPrice" placeholder="주가" />
+    <button id="addStockBtn">종목 추가</button>
+
+    <table id="stockTable">
+      <tr>
+        <th>종목명</th>
+        <th>주가</th>
+      </tr>
+    </table>
+  </body>
+</html>
