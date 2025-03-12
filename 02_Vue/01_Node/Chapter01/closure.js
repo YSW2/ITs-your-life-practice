@@ -5,7 +5,7 @@ function outer() {
     return count;
   };
 }
-
+[].filter(() => {});
 closure = outer();
 console.log(closure());
 console.log(closure());
