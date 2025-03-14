@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      window.onload = () => {
+        class Ball {
+          constructor() {
+            this.x = 0;
+            this.y = 0;
+            this.vX = 0;
+            this.vY = 0;
+            this.accX = 0;
+            this.accY = 0;
+          }
+          move() {
+            this.x =
+              this.x +
+              this.vX * (1000 / 60) +
+              0.5 * this.accX * (1000 / 60) ** 2;
+            this.y =
+              this.y +
+              this.vY * (1000 / 60) +
+              0.5 * this.accY * (1000 / 60) ** 2;
+          }
+          changeV() {
+            this.vX = this.vX + this.accX * (1000 / 60);
+            this.vY = this.vY + this.accY * (1000 / 60);
+          }
+          changeAcc(accX, accY) {
+            this.accX = accX;
+            this.accY = accY;
+          }
+        }
+
+        const init = () => {
+          const ball = new Ball();
+
+          const renderedBall = document.createElement('div');
+
+          Object.assign(renderedBall.style, {
+            width: '150px',
+            height: '150px',
+            border_radius: '50%',
+            position: 'fixed',
+          });
+        };
+
+        const render = () => {};
+
+        setInterval(() => {}, 1000 / 60);
+      };
+    </script>
+  </head>
+  <body></body>
+</html>
