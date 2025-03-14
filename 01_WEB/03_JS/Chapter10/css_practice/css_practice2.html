@@ -45,10 +45,18 @@
             height: '150px',
             border_radius: '50%',
             position: 'fixed',
+            background_color: 'rgb(0, 0, 0)',
+            top: '50px',
+            left: '50px',
           });
+
+          document.body.appendChild(renderedBall);
+          return ball;
         };
 
         const render = () => {};
+
+        const ball = init();
 
         setInterval(() => {}, 1000 / 60);
       };
