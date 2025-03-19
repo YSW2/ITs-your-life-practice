@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <input
+        :value="value"
+        @input="changeValue"
+        placeholder="이름을 입력하세요"
+      />
+      <h2>{{value}}님에게 보내는 편지</h2>
+    </div>
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+      let vm = Vue.createApp({
+        name: 'App',
+        data() {
+          return { value: '' };
+        },
+        methods: {
+          changeValue(e) {
+            this.value = e.target.value;
+          },
+        },
+      }).mount('#app');
+    </script>
+  </body>
+</html>
