@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <label>
+        마법 주문:
+        <input type="text" :value="spell" @keyup.enter="handleChange"
+      /></label>
+      <p>{{getMessage()}}</p>
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+      const spell = '';
+      let count = 0;
+      let message = '';
+
+      let vm = Vue.createApp({
+        name: 'App',
+        data() {
+          return {
+            spell: spell,
+            message: message,
+            count: count,
+          };
+        },
+        methods: {
+          handleChange(e) {
+            if (e.target.value < 3) {
+              this.message = '올바른 주문을 입력하세요!';
+            } else if (this.spell === e.target.value) {
+              this.message =
+                '이미 발사한 주문입니다! 새로운 주문을 입력하세요.';
+            } else {
+              this.spell = e.target.value;
+              this.count += 1;
+              this.message = `${this.spell} 발사! (지금까지 ${this.count}회 발사함)`;
+            }
+          },
+          getMessage() {
+            return this.message;
+          },
+        },
+      }).mount('#app');
+    </script>
+  </body>
+</html>

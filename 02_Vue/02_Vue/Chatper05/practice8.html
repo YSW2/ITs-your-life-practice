@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>호그와트 마법 도서관 출입 관리 시스템</h1>
+      <div>
+        <form @submit.prevent="() => handleEnter(name)">
+          <label> 마법사 이름 입력: <input type="text" v-model="name" /></label>
+          <input type="submit" value="출입 기록 추가" :disabled="shutDown" />
+        </form>
+      </div>
+      <p v-show="shutDown" style="color: red">
+        현재 도서관 인원 포화 상태입니다! 더 이상 출입할 수 없습니다.
+      </p>
+      <h2>현재 도서관 출입 중 (최근 순):</h2>
+      <div>
+        <ul>
+          <li v-for="(name, index) in [...currentList].reverse()">
+            {{index + 1}}. {{name}}
+            <input type="button" value="삭제" @click="() => handleOut(name)" />
+          </li>
+        </ul>
+      </div>
+      <h2>출입 횟수 통계:</h2>
+      <div>
+        <ul>
+          <li v-for="[name, count] in Object.entries(enterCount)">
+            {{name}}: {{count}}회 출입
+          </li>
+        </ul>
+      </div>
+      <div>
+        <p v-if="Object.entries(enterCount).length > 0">
+          가장 많이 출입한 마법사: {{getMax()[0]}} ({{getMax()[1]}}회)
+        </p>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+      const currentList = [];
+      const enterCount = {};
+      let shutDown = false;
+
+      let name = '';
+
+      let vm = Vue.createApp({
+        name: 'App',
+        data() {
+          return {
+            currentList: currentList,
+            enterCount: enterCount,
+            name: name,
+            shutDown: shutDown,
+          };
+        },
+        methods: {
+          handleEnter(name) {
+            if (this.currentList.includes(name)) {
+              console.warn(`${name}은(는) 이미 출입 중입니다!`);
+              return;
+            }
+            enterCount[name] = (enterCount[name] ?? 0) + 1;
+            this.currentList.push(name);
+          },
+          handleOut(name) {
+            this.currentList.splice(this.currentList.indexOf(name), 1);
+          },
+          getMax() {
+            const result = Object.entries(enterCount).reduce(
+              (acc, cur) => {
+                let [name, count] = cur;
+                return acc[1] > count ? acc : cur;
+              },
+              ['', -Infinity]
+            );
+
+            return result;
+          },
+        },
+        watch: {
+          currentList: {
+            handler(cur) {
+              if (cur.length >= 5) {
+                this.shutDown = true;
+                console.warn('⚠ 현재 도서관 인원 포화!');
+              } else {
+                this.shutDown = false;
+              }
+            },
+            deep: true,
+          },
+        },
+        created() {
+          console.log('📚 도서관 관리 시스템 가동!');
+        },
+        mounted() {
+          console.log('✅ 도서관 준비 완료!');
+        },
+      }).mount('#app');
+    </script>
+  </body>
+</html>

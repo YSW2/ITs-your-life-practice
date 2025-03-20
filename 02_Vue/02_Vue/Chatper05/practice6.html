@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <div>
+        <label> 마법이론: <input type="number" v-model="magicScore" /> </label>
+      </div>
+      <div>
+        <label> 주문실습: <input type="number" v-model="spellScore" /> </label>
+      </div>
+      <div>
+        <label> 비행수업: <input type="number" v-model="flightScore" /> </label>
+      </div>
+      <div><input type="button" value="평가하기" @click="getMessage" /></div>
+      <div><p>{{message}} 평균: {{average}}</p></div>
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+      let magicScore = 0;
+      let spellScore = 0;
+      let flightScore = 0;
+      let message = '';
+      let average = 0;
+
+      let vm = Vue.createApp({
+        name: 'App',
+        data() {
+          return {
+            magicScore: magicScore,
+            spellScore: spellScore,
+            flightScore: flightScore,
+            message: message,
+            average: average,
+          };
+        },
+
+        methods: {
+          getMessage() {
+            if (
+              !this.isValid(this.magicScore) ||
+              !this.isValid(this.spellScore) ||
+              !this.isValid(this.flightScore)
+            ) {
+              alert('점수는 0에서 100 사이로 입력해주세요!');
+              return;
+            }
+            this.average =
+              (this.magicScore + this.spellScore + this.flightScore) / 3;
+
+            if (this.average >= 90) this.message = '최우수 합격!';
+            else if (this.average >= 70) this.message = '합격!';
+            else if (this.average < 70) this.message = '불합격';
+          },
+          isValid(score) {
+            return 0 <= score && score <= 100;
+          },
+        },
+      }).mount('#app');
+    </script>
+  </body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <div>
+        <label> 이름: <input type="text" v-model="name" /></label>
+      </div>
+      <div>
+        <label>
+          출생 연도: <input type="number" v-model.number="birth"
+        /></label>
+      </div>
+      <div>
+        <p>{{getMessage()}}</p>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+      const name = '';
+      const birth = 0;
+      let dormitory = '';
+
+      let vm = Vue.createApp({
+        name: 'App',
+        data() {
+          return {
+            name: name,
+            birth: birth,
+            dormitory: dormitory,
+          };
+        },
+        watch: {
+          name(cur) {
+            if (['a', 'e', 'i', 'o', 'u'].includes(cur[0].toLowerCase())) {
+              this.dormitory = '그리핀도르';
+            } else if (cur.length >= 5) {
+              this.dormitory = '래번클로';
+            } else if (
+              cur.at(-1).toLowerCase() === 's' ||
+              cur.at(-1).toLowerCase() === 'n'
+            ) {
+              this.dormitory = '후플푸프';
+            } else {
+              this.dormitory = '슬리데린';
+            }
+            console.log(this.dormitory);
+          },
+        },
+        methods: {
+          getMessage() {
+            if (this.birth.length === 0 || this.name.length === 0) {
+              return '조건을 충족해주세요!';
+            }
+            let age = 2025 - this.birth;
+
+            if (age < 11 || 19 <= age) {
+              return '입학 대상 연령이 아닙니다.';
+            }
+
+            return `${this.name}님은 ${this.dormitory}에 배정되었습니다. (나이: ${age}세)`;
+          },
+        },
+      }).mount('#app');
+    </script>
+  </body>
+</html>

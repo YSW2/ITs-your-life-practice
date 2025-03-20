@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <div>
+        <input type="button" @click="handleSubmit" value="엘더 지팡이" />
+        <input type="button" @click="handleSubmit" value="단풍 지팡이" />
+        <input type="button" @click="handleSubmit" value="벚나무 지팡이" />
+        <input type="button" @click="handleReset" value="지팡이 초기화" />
+      </div>
+      <p>{{message}}</p>
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+      const wand = '';
+      let message = '';
+
+      let vm = Vue.createApp({
+        name: 'App',
+        data() {
+          return {
+            wand: wand,
+            message: message,
+          };
+        },
+        methods: {
+          handleSubmit(e) {
+            if (this.wand === e.target.value) {
+              this.message = `이미 ${this.wand}를 선택했습니다. 다른 지팡이를 선택하세요!`;
+            } else {
+              this.wand = e.target.value;
+              this.message = `당신은 ${this.wand}를 선택했습니다!`;
+            }
+          },
+          handleReset() {
+            this.wand = '';
+            this.message = '지팡이를 다시 선택해주세요.';
+          },
+        },
+      }).mount('#app');
+    </script>
+  </body>
+</html>

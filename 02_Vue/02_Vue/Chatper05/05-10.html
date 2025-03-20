@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      div {
+        padding: 20px;
+        background-color: #e0e0e0;
+        border: 1px solid #999;
+        width: 200px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        outline: none; /* 포커스 테두리 제거 */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div
+        @keydown.right="moveRight"
+        tabindex="0"
+        :style="{ position: 'absolute', left: position + 'px', top: '100px' }"
+        ref="movableDiv"
+      ></div>
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+      let vm = Vue.createApp({
+        name: 'App',
+        data() {
+          return {
+            position: 100, // 초기 위치 (px)
+          };
+        },
+        methods: {
+          moveRight() {
+            this.position += 10; // 한 번에 10px씩 이동
+          },
+        },
+        mounted() {
+          // 컴포넌트가 마운트되면 자동으로 포커스 설정
+          this.$refs.movableDiv.focus();
+        },
+      }).mount('#app');
+    </script>
+  </body>
+</html>

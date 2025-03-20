@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <div>
+        <input
+          type="button"
+          value="지팡이 추가"
+          @click="() =>
+        handleAdd('지팡이')"
+        />
+        <input
+          type="button"
+          value="로브 추가"
+          @click="() =>
+        handleAdd('로브')"
+        />
+        <input
+          type="button"
+          value="부엉이 추가"
+          @click="() =>
+        handleAdd('부엉이')"
+        />
+      </div>
+      <h1>장바구니:</h1>
+      <ul>
+        <li v-for="(value, index) in cart">
+          - {{value}} ({{menu[value]}}G)
+          <input
+            type="button"
+            @click="() => {handleDelete(index)}"
+            value="삭제"
+          />
+        </li>
+      </ul>
+      <p>총 합계: {{getTotal()}}G</p>
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+      const cart = [];
+      const menu = {
+        지팡이: 100,
+        로브: 200,
+        부엉이: 300,
+      };
+
+      let vm = Vue.createApp({
+        name: 'App',
+        data() {
+          return {
+            cart: cart,
+            menu: menu,
+          };
+        },
+        methods: {
+          handleAdd(value) {
+            this.cart.push(value);
+            console.log(cart);
+          },
+          handleDelete(index) {
+            this.cart.splice(index, 1);
+          },
+          getTotal() {
+            return cart.reduce((acc, cur) => {
+              let price = menu[cur];
+              return acc + price;
+            }, 0);
+          },
+        },
+      }).mount('#app');
+    </script>
+  </body>
+</html>
