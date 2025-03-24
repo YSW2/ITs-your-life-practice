@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-
+SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <div class="container-fluid m-3">
+        <div class="mt-3">
+          <h1>6번 문제: 가장 덜 혼잡한 시간대 추천</h1>
+        </div>
+        <div class="mt-3">
+          <div v-if="mounted" class="alert alert-info">
+            <i class="fa-solid fa-clock"></i> 오늘 추천 시간대:
+            <strong>09~10시</strong> (가장 여유롭습니다!)
+          </div>
+        </div>
+        <div class="mt-3">
+          <button
+            :class="{'btn': true, 'btn-outline-primary': true, 'me-2': true, 'active': selected === 1}"
+            @click="() => handleSubmit(1)"
+          >
+            <i class="fa-solid fa-clock"></i> 07~08시
+          </button>
+          <button
+            :class="{'btn': true, 'btn-outline-primary': true, 'me-2': true, 'active': selected === 2}"
+            @click="() => handleSubmit(2)"
+          >
+            <i class="fa-solid fa-clock"></i> 08~09시
+          </button>
+          <button
+            :class="{'btn': true, 'btn-outline-primary': true, 'me-2': true, 'active': selected === 3}"
+            @click="() => handleSubmit(3)"
+          >
+            <i class="fa-solid fa-clock"></i> 09~10시
+          </button>
+          <button
+            :class="{'btn': true, 'btn-outline-primary': true, 'me-2': true, 'active': selected === 4}"
+            @click="() => handleSubmit(4)"
+          >
+            <i class="fa-solid fa-clock"></i> 10~11시
+          </button>
+        </div>
+        <div class="mt-3">
+          <div v-if="selected === 1" class="alert alert-warning">
+            07~08시: 혼잡합니다! 추천: 09~10시 시간대를 이용하세요.
+          </div>
+          <div v-if="selected === 2" class="alert alert-warning">
+            08~09시: 혼잡합니다! 추천: 09~10시 시간대를 이용하세요.
+          </div>
+          <div v-if="selected === 3" class="alert alert-info">
+            09~10시: 비교적 여유롭습니다! 이용해 보세요.
+          </div>
+          <div v-if="selected === 4" class="alert alert-warning">
+            10~11시: 혼잡합니다! 추천: 09~10시 시간대를 이용하세요.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+      const mounted = false;
+      const selected = 0;
+
+      let vm = Vue.createApp({
+        name: 'App',
+        data() {
+          return {
+            selected: selected,
+            mounted: mounted,
+          };
+        },
+        methods: {
+          handleSubmit(index) {
+            this.selected = index;
+          },
+        },
+        mounted() {
+          this.mounted = true;
+        },
+      }).mount('#app');
+    </script>
+  </body>
+</html>
