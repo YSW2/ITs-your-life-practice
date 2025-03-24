@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-
+SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      .favorite-restaurant {
+        border: 2px solid #ffd43b;
+        box-shadow: 1px 1px 5px #ffd43b;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="container m-3">
+        <div class="mb-3">
+          <h1>세종대 맛집 즐겨찾기 기능</h1>
+        </div>
+        <div class="row">
+          <div
+            v-for="(restaurant, index) in restaurants"
+            :key="restaurant"
+            class="col-md-4 card-container"
+          >
+            <div
+              class="card card-default p-3 mb-3 position-relative"
+              :class="{'favorite-restaurant': restaurant.favorite}"
+            >
+              <div class="card-title" style="font-weight: bold">
+                {{restaurant.name}}
+              </div>
+              <div class="card-text">
+                <i class="fa-solid fa-star" style="color: #ffd43b"></i> 평균
+                평점: {{getAverage(restaurant.reviews)}}
+              </div>
+              <div class="card-text">리뷰 수: {{restaurant.reviewNumbers}}</div>
+              <div class="position-absolute top-0 end-0">
+                <button
+                  class="btn btn-*"
+                  @click.stop="toggleFavorite(restaurant.name)"
+                >
+                  <i
+                    class="fa-regular fa-bookmark text-secondary"
+                    :class="{
+                  'fa-regular': !restaurant.favorite,
+                  'text-secondary': !restaurant.favorite,
+                  'fa-solid': restaurant.favorite,
+                  'text-warning': restaurant.favorite
+              }"
+                  ></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="my-5" />
+        <div class="mb-3">
+          <h1>
+            <i class="fa-solid fa-star" style="color: #ffd43b"></i> 즐겨찾기
+            목록
+          </h1>
+        </div>
+        <div class="container mb-3 position-relative">
+          <div
+            v-if="favoriteList.length === 0"
+            class="position-absolute top-50 start-50"
+          >
+            즐겨찾기 한 맛집이 없습니다
+          </div>
+          <div class="row">
+            <div
+              v-for="(restaurant, index) in favoriteList"
+              :key="restaurant"
+              class="col-md-4 card-container"
+            >
+              <div
+                class="card card-default p-3 mb-3"
+                :class="{'favorite-restaurant': restaurant.favorite}"
+              >
+                <div class="card-title" style="font-weight: bold">
+                  {{restaurant.name}}
+                </div>
+                <div class="card-text">
+                  <i class="fa-solid fa-star" style="color: #ffd43b"></i> 평균
+                  평점: {{getAverage(restaurant.reviews)}}
+                </div>
+                <div class="card-text">
+                  리뷰 수: {{restaurant.reviewNumbers}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+      let vm = Vue.createApp({
+        name: 'App',
+        data() {
+          return {
+            restaurants: [
+              {
+                name: '빠오즈푸',
+                reviews: [4.7, 4.8, 4.6],
+                reviewNumbers: 4,
+                favorite: false,
+              },
+              {
+                name: '시홍쓰',
+                reviews: [4.2, 4.0, 4.1],
+                reviewNumbers: 3,
+                favorite: false,
+              },
+              {
+                name: '오사이초밥',
+                reviews: [3.7, 3.6, 3.8],
+                reviewNumbers: 2,
+                favorite: false,
+              },
+              {
+                name: '은혜즉석떡볶이',
+                reviews: [4.5, 4.6, 4.5],
+                reviewNumbers: 5,
+                favorite: false,
+              },
+              {
+                name: '우화등선',
+                reviews: [3.2, 3.4, 3.1],
+                reviewNumbers: 6,
+                favorite: false,
+              },
+              {
+                name: '세종원',
+                reviews: [3.9, 4.0, 3.8],
+                reviewNumbers: 3,
+                favorite: false,
+              },
+            ],
+          };
+        },
+        methods: {
+          getAverage(reviews) {
+            return (
+              reviews.reduce((acc, cur) => acc + cur, 0) / reviews.length
+            ).toFixed(2);
+          },
+          toggleFavorite(name) {
+            const index = this.restaurants.findIndex(
+              (item) => item.name === name
+            );
+            this.restaurants[index].favorite =
+              !this.restaurants[index].favorite;
+          },
+        },
+        computed: {
+          favoriteList() {
+            return this.restaurants.filter((item) => item.favorite);
+          },
+        },
+      }).mount('#app');
+    </script>
+  </body>
+</html>

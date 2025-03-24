@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-
+SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div id="app">
+      <div class="container m-3">
+        <div class="mb-3">
+          <h1>세종대 맛집 추천 투표</h1>
+        </div>
+        <div class="row">
+          <div
+            v-for="(restaurant, index) in restaurants"
+            :key="restaurant.name"
+            class="col-md-4 card-container"
+          >
+            <div
+              class="card card-default p-3 mb-3"
+              :style="getClasses(restaurant.vote)"
+            >
+              <div class="card-title" style="font-weight: bold">
+                {{restaurant.name}}
+              </div>
+              <div class="card-text mb-3">
+                <i class="fa-solid fa-star" style="color: #ffd43b"></i> 평균
+                평점: {{getAverage(restaurant.reviews)}}
+              </div>
+              <div class="card-text mb-3">
+                <i class="fa-solid fa-thumbs-up text-primary"></i> 추천 수:
+                {{restaurant.vote}}
+              </div>
+              <button
+                class="btn btn-outline-primary"
+                @click="addVote(restaurant.name)"
+              >
+                <i class="fa-solid fa-thumbs-up"></i> 추천하기
+              </button>
+              <div
+                v-if="restaurant.vote >= 10"
+                class="bg-danger text-white text-center rounded mt-2 py-1"
+              >
+                &#128293; 인기 급 상승!
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+      let vm = Vue.createApp({
+        name: 'App',
+        data() {
+          return {
+            restaurants: [
+              {
+                name: '빠오즈푸',
+                reviews: [4.7, 4.8, 4.6],
+                reviewNumbers: 4,
+                vote: 0,
+              },
+              {
+                name: '시홍쓰',
+                reviews: [4.2, 4.0, 4.1],
+                reviewNumbers: 3,
+                vote: 0,
+              },
+              {
+                name: '오사이초밥',
+                reviews: [3.7, 3.6, 3.8],
+                reviewNumbers: 2,
+                vote: 0,
+              },
+              {
+                name: '은혜즉석떡볶이',
+                reviews: [4.5, 4.6, 4.5],
+                reviewNumbers: 5,
+                vote: 0,
+              },
+              {
+                name: '우화등선',
+                reviews: [3.2, 3.4, 3.1],
+                reviewNumbers: 6,
+                vote: 0,
+              },
+              {
+                name: '세종원',
+                reviews: [3.9, 4.0, 3.8],
+                reviewNumbers: 3,
+                vote: 0,
+              },
+            ],
+          };
+        },
+        methods: {
+          getAverage(reviews) {
+            return (
+              reviews.reduce((acc, cur) => acc + cur, 0) / reviews.length
+            ).toFixed(2);
+          },
+          getClasses(vote) {
+            if (vote >= 10) {
+              return 'background-color: rgb(255, 128, 0)';
+            } else if (vote >= 5) {
+              return 'background-color: rgb(255, 203, 107)';
+            } else {
+              return 'background-color: lightgray';
+            }
+          },
+          addVote(name) {
+            const index = this.restaurants.findIndex(
+              (item) => item.name === name
+            );
+            this.restaurants[index].vote += 1;
+          },
+        },
+      }).mount('#app');
+    </script>
+  </body>
+</html>
