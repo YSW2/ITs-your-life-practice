@@ -117,11 +117,11 @@ SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSC
           },
           getClasses(vote) {
             if (vote >= 10) {
-              return 'background-color: rgb(255, 128, 0)';
+              return { backgroundColor: 'rgb(255, 128, 0)' };
             } else if (vote >= 5) {
-              return 'background-color: rgb(255, 203, 107)';
+              return { backgroundColor: 'rgb(255, 203, 107)' };
             } else {
-              return 'background-color: lightgray';
+              return { backgroundColor: 'lightgray' };
             }
           },
           addVote(name) {
