@@ -1,0 +1,51 @@
+.modal-wrap {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+}
+.modal-container {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 31.25rem;
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+  gap: 0.8rem;
+}
+.input-text {
+  padding: 0.625rem;
+  border: 1px solid #b5b5b5;
+  border-radius: 0.1rem;
+}
+.modal-footer {
+  display: flex;
+  gap: 0.8rem;
+}
+.modal-button {
+  flex: 1;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 0.3rem;
+}
+.add {
+  background-color: rgb(255, 217, 28);
+}
+.add:active {
+  background-color: rgb(183, 159, 39);
+}
+.cancel {
+  background-color: rgb(222, 222, 222);
+}
+.cancel:active {
+  background-color: rgb(161, 161, 161);
+}

@@ -1,0 +1,17 @@
+* {
+  font-family: '42dot Sans', sans-serif;
+  list-style: none;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+a {
+  color: rgb(252, 255, 100);
+}
+
+body,
+main {
+  background-color: #222;
+  color: white;
+  line-height: 2rem;
+}
