@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div>리뷰 페이지</div>
 </template>
 
 <script setup></script>

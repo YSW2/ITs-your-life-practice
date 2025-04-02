@@ -7,22 +7,30 @@
     <div class="detail-price">
       <h2>{{ price.toLocaleString() }}원</h2>
     </div>
-    <button
-      class="btn btn-primary"
-      @click="handleAddtoCart({ name, price, image })"
-    >
-      장바구니 담기
-    </button>
-    <router-link
-      :to="`/products/${productId}`"
-      exact-active-class="active-tab"
-      name="description"
-      >상세정보</router-link
-    ><router-link
-      :to="`/products/${productId}/review`"
-      exact-active-class="active-tab"
-      >리뷰</router-link
-    >
+    <div>
+      <button
+        class="btn btn-primary"
+        @click="handleAddtoCart({ name, price, image })"
+      >
+        장바구니 담기
+      </button>
+    </div>
+    <div class="route-btn-container">
+      <router-link
+        class="route-btn"
+        :to="`/products/${productId}`"
+        exact-active-class="active-tab"
+        name="productDescription"
+        >상세정보</router-link
+      ><router-link
+        class="route-btn"
+        :to="`/products/${productId}/review`"
+        exact-active-class="active-tab"
+        name="ProductReview"
+        >리뷰</router-link
+      >
+    </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -56,5 +64,20 @@ const handleAddtoCart = (product) => {
 }
 .detail-name {
   margin: 30px 0;
+}
+.route-btn-container {
+  margin: 20px 0;
+}
+.route-btn {
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px;
+}
+.active-tab {
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: rgb(73, 137, 255);
+  color: white;
 }
 </style>
