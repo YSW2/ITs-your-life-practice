@@ -9,9 +9,6 @@
         @edit-requested="handleEditMovie(movie)"
         @delete-requested="handleDelete(movie.id)"
       />
-      <!-- <router-link :to="`/movies/${movie.id}`">
-        {{ movie.title }} - {{ movie.director }}</router-link
-      > -->
     </div>
   </div>
 

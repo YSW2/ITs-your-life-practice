@@ -1,0 +1,12 @@
+* {
+  font-family: '42dot Sans', sans-serif;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
+}
+a {
+  color: inherit;
+}
+ul {
+  padding-inline-start: 0;
+}
