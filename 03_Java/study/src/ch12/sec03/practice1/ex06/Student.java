@@ -1,0 +1,33 @@
+package ch12.sec03.practice1.ex06;
+
+import java.util.Objects;
+
+public class Student {
+    private int no;
+    private String name;
+
+    public Student (int no, String name) {
+        this.no = no;
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals (Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return no == student.no && Objects.equals(name, student.name);
+    }
+
+    @Override
+    public int hashCode () {
+        return Objects.hash(no, name);
+    }
+
+    @Override
+    public String toString () {
+        return "Student{" +
+                "no=" + no +
+                ", name='" + name + '\'' +
+                '}';
+    }
+}
