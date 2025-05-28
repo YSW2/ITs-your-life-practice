@@ -21,9 +21,6 @@ public class BandProxy extends BandComponent {
             Class<?> clazz = member.getClass();
 
             try {
-                if (clazz instanceof Member) {
-
-                }
                 Field energyLevelField = clazz.getDeclaredField("energyLevel");
                 energyLevelField.setAccessible(true);
                 int energyLevel = (int) energyLevelField.get(member);
