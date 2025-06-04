@@ -27,13 +27,6 @@ public class RandomLunchServlet extends HttpServlet {
         String vote = request.getParameter("vote");
         PrintWriter out = response.getWriter();
 
-//        voteList.put("쭈꾸미볶음", 0);
-//        voteList.put("김치찌개", 0);
-//        voteList.put("크림파스타", 0);
-//        voteList.put("부대찌개", 0);
-//        voteList.put("햄버거", 0);
-//        voteList.put("제육볶음", 0);
-
         out.println("<html><body>");
 
         if (voteMenu != null) {
