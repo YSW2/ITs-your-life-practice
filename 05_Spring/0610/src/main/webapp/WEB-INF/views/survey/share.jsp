@@ -15,6 +15,9 @@
 <p><b>한마디: </b> ${ment}</p>
 <p>👇 아래 링크를 눌러 설문에 참여하세요</p>
 <a href="${link}">${link}</a>
+<hr>
 <p>링크를 복사해서 공유하거나, 다른 친구들도 참여하도록 유도해보세요</p>
+<hr>
+<a href="/survey/upload?id=${id}">결과 업로드하러 가기</a>
 </body>
 </html>

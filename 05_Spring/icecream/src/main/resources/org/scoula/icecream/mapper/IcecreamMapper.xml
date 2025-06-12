@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.scoula.icecream.mapper.IcecreamMapper">
+    <insert id="create" useGeneratedKeys="true">
+        insert into tbl_icecream (name, flavor, price)
+        values (#{name}, #{flavor}, #{price})
+
+        <selectKey resultType="Int" keyProperty="no" keyColumn="no" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="findAll" resultType="org.scoula.icecream.domain.IcecreamVO">
+		<![CDATA[
+        select *
+        from tbl_icecream
+        order by reg_date desc
+        ]]>
+	</select>
+
+    <delete id="delete">
+        delete
+        from tbl_icecream
+        where no = #{no}
+    </delete>
+
+</mapper>
