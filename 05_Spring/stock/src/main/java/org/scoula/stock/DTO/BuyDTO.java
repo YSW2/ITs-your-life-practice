@@ -4,44 +4,39 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.scoula.stock.domain.StockVO;
+import org.scoula.stock.domain.BuyVO;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-
-public class StockDTO {
-    private int no;
+public class BuyDTO {
+    private Long id;
     private String stockCode;
     private String stockName;
     private int price;
-    private String description;
-    private Date regDate;
+    private Date buyDate;
 
-    // VO  DTO 변환
-    public static StockDTO of(StockVO vo) {
-        return vo == null ? null : StockDTO.builder()
-                .no(vo.getNo())
+    public static BuyDTO of(BuyVO vo) {
+        return vo == null ? null : BuyDTO.builder()
+                .id(vo.getId())
                 .stockCode(vo.getStockCode())
                 .stockName(vo.getStockName())
                 .price(vo.getPrice())
-                .description(vo.getDescription())
-                .regDate(vo.getRegDate())
+                .buyDate(vo.getBuyDate())
                 .build();
     }
 
     // DTO  VO 변환
-    public StockVO toVo() {
-        return StockVO.builder()
-                .no(no)
+    public BuyVO toVo() {
+        return BuyVO.builder()
+                .id(id)
                 .stockCode(stockCode)
                 .stockName(stockName)
                 .price(price)
-                .description(description)
-                .regDate(regDate)
+                .buyDate(buyDate)
                 .build();
     }
 }

@@ -35,3 +35,12 @@ VALUES ('005930', '삼성전자', 77000, '대한민국 대표 반도체 기업�
        ('010130', '고려아연', 490000, '아연 및 비철금속 제련 전문 기업입니다.'),
        ('009150', '삼성전기', 150000, '전자부품(MLCC) 제조 기업입니다.'),
        ('034730', 'SK', 225000, 'SK그룹의 지주회사입니다.');
+
+CREATE TABLE tbl_buy
+(
+    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+    stock_code VARCHAR(20)  NOT NULL,
+    stock_name VARCHAR(100) NOT NULL,
+    price      INT          NOT NULL,
+    buy_date   DATETIME DEFAULT CURRENT_TIMESTAMP
+);

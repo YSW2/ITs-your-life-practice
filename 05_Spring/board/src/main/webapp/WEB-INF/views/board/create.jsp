@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -8,7 +8,7 @@
 <h1 class="page-header my-4"><i class="far fa-edit"></i> 새 글쓰기</h1>
 
 <div>
-    <form method="post" action="create" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data">
         <div>
             <label>제목</label>
             <input name="title" class="form-control">

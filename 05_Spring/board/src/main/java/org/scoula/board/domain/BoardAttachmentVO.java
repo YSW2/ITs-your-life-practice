@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.scoula.common.util.UploadFiles;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
@@ -32,5 +33,10 @@ public class BoardAttachmentVO {
                 .size(part.getSize())
                 .build();
     }
+
+    public String getFileSize() {
+        return UploadFiles.getFormatSize(size);
+    }
+
 
 }

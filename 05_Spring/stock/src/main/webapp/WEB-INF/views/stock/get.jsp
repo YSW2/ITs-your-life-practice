@@ -17,9 +17,16 @@
     <div>${stock.description}</div>
 </div>
 
-<div class="mt-4">
+
+<div class="mt-4 d-flex flex-row gap-3">
     <a href="list" class="btn btn-secondary"><i class="fas fa-list"></i> 목록</a>
-    <a href="update?no=${board.no}" class="btn btn-success"><i class="fa-solid fa-cart-plus"></i> 매수하기</a>
+    <form action="/stock/buy" method="post" id="buyForm">
+        <input type="hidden" name="no" value="${stock.no}"/>
+        <input type="hidden" name="stockCode" value="${stock.stockCode}"/>
+        <input type="hidden" name="stockName" value="${stock.stockName}"/>
+        <input type="hidden" name="price" value="${stock.price}"/>
+        <button type="submit" class="btn btn-success"><i class="fa-solid fa-cart-plus"></i> 매수하기</button>
+    </form>
 </div>
 
 <%@include file="../layouts/footer.jsp" %>

@@ -11,10 +11,10 @@
             <!-- 좌측 메뉴 구성 -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa-solid fa-chart-simple"></i> 주식 목록</a>
+                    <a class="nav-link" href="/stock/list"><i class="fa-solid fa-chart-simple"></i> 주식 목록</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa-solid fa-book"></i> 매수한 종목 보기</a>
+                    <a class="nav-link" href="/stock/buyList"><i class="fa-solid fa-book"></i> 매수한 종목 보기</a>
                 </li>
             </ul>
 

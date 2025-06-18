@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.scoula.stock.mapper.BuyMapper">
+
+    <insert id="insert">
+        INSERT INTO tbl_buy (stock_code, stock_name, price)
+        VALUES (#{stockCode}, #{stockName}, #{price})
+        <selectKey resultType="Long" keyProperty="id" keyColumn="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <delete id="delete">
+        DELETE
+        FROM tbl_buy
+        where id = #{id}
+    </delete>
+    <select id="getList" resultType="org.scoula.stock.domain.BuyVO">
+        <![CDATA[
+        SELECT *
+        FROM tbl_buy
+        ORDER BY buy_date DESC
+        ]]>
+    </select>
+</mapper>
