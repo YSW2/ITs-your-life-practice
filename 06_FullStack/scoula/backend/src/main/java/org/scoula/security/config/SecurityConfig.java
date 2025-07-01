@@ -31,105 +31,108 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity // Spring Security 활성화
 @Log4j2
 @MapperScan(basePackages = {"org.scoula.security.account.mapper"})
-@ComponentScan(basePackages = {"org.scoula.security"})
+@ComponentScan(basePackages = "org.scoula.security")
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    private final CustomAccessDeniedHandler accessDeniedHandler;
-    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
-    private final UserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationErrorFilter authenticationErrorFilter;
+    // DB 기반 인증 처리를 위한 서비스 (in-memory 방식과 병행 불가)
+    private final UserDetailsService userDetailsService;
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
 
     @Autowired
-    private JwtUsernamePasswordAuthenticationFilter jwtUsernamePasswordAuthenticationFilter;
+    private JwtUsernamePasswordAuthenticationFilter jwtUsernamePasswordAuthenticationFilter; // 커스텀 로그인 필터 주입
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        // 보안 강화를 위한 BCrypt 해시 알고리즘 사용
         return new BCryptPasswordEncoder();
     }
 
+    // 문자셋 필터 정의
+    public CharacterEncodingFilter encodingFilter() {
+        CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
+        encodingFilter.setEncoding("UTF-8");           // 문자 인코딩 설정
+        encodingFilter.setForceEncoding(true);         // 강제 인코딩 적용
+        return encodingFilter;
+    }
+
+    // AuthenticationManager 빈 등록
     @Bean
     public AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
     }
 
-    // 문자셋 필터
-    public CharacterEncodingFilter encodingFilter() {
-        CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
-        encodingFilter.setEncoding("UTF-8");
-        encodingFilter.setForceEncoding(true);
-        return encodingFilter;
-    }
-
+    // Cross-Origin 설정 (CORS 허용)
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOriginPattern("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
+
+        config.setAllowCredentials(true);           // 인증 정보 포함 허용
+        config.addAllowedOriginPattern("*");        // 모든 Origin 허용
+        config.addAllowedHeader("*");               // 모든 헤더 허용
+        config.addAllowedMethod("*");               // 모든 HTTP Method 허용
+
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
 
-    // 접근 제한 무시 경로 설정 – resource
+    // 정적 리소스 및 인증 제외 경로 설정
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/assets/**", "/*", "/api/member/**",
-                // Swagger 관련 url은 보안에서 제외
-                "/swagger-ui.html", "/webjars/**", "/swagger-resources/**", "/v2/api-docs"
+        web.ignoring().antMatchers(
+                "/assets/**",   // 정적 리소스
+                "/*",           // 루트 경로
+                "/api/member/**", // 회원 가입 등 비인증 API
+
+                // Swagger 관련 리소스 보안 제외
+                "/swagger-ui.html",
+                "/webjars/**",
+                "/swagger-resources/**",
+                "/v2/api-docs"
         );
     }
 
+    // HTTP 보안 설정
     @Override
     public void configure(HttpSecurity http) throws Exception {
+        /// 한글 인코딩 필터
         http.addFilterBefore(encodingFilter(), CsrfFilter.class)
-                // 인증 에러 필터
+                // 인증 예외 처리 필터 (JWT 파싱 오류 등)
                 .addFilterBefore(authenticationErrorFilter, UsernamePasswordAuthenticationFilter.class)
-                // Jwt 인증 필터
+                // JWT 인증 필터 (헤더에서 JWT 추출 → 인증 객체 생성)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                // 로그인 인증 필터
+                // 로그인 인증 필터 (ID/PW 로그인 처리)
                 .addFilterBefore(jwtUsernamePasswordAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        http.exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint)
-                .accessDeniedHandler(accessDeniedHandler);
+        // 인증/인가 실패 예외 처리 설정
+        http
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint) // 인증되지 않은 사용자 처리
+                .accessDeniedHandler(accessDeniedHandler);          // 권한 부족 사용자 처리
+        http
+                .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS).permitAll()  // Preflight 요청 허용
+                .anyRequest().permitAll()                    // 👉 일단 모든 요청 허용 (테스트용)
 
-        http.formLogin()
-                .loginPage("/security/login")
-                .loginProcessingUrl("/security/login")
-                .defaultSuccessUrl("/");
-
-        http.logout() // 로그아웃 설정 시작
-                .logoutUrl("/security/logout") // POST: 로그아웃 호출 url
-                .invalidateHttpSession(true) // 세션 invalidate
-                .deleteCookies("remember-me", "JSESSION-ID") // 삭제할 쿠키 목록
-                .logoutSuccessUrl("/security/logout"); // GET: 로그아웃 이후 이동할 페이지
-
-        http.authorizeRequests() // 경로별 접근 권한 설정
-                .antMatchers(HttpMethod.OPTIONS).permitAll()
-                // 일단 모든 접근 허용
-                .anyRequest().permitAll();
-//                .antMatchers("/api/security/all").permitAll() // 모두 허용
-//                .antMatchers("/api/security/member").access("hasRole('ROLE_MEMBER')") // ROLE_MEMBER 이상 접근 허용
-//                .antMatchers("/api/security/admin").access("hasRole('ROLE_ADMIN')") // ROLE_ADMIN 이상 접근 허용
-//                .anyRequest().authenticated(); // 나머지는 로그인 된 경우 모두 허용
-
-        http.httpBasic().disable() // 기본 HTTP 인증 비활성화
-                .csrf().disable() // CSRF 비활성화
-                .formLogin().disable() // formLogin 비활성화  관련 필터 해제
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 세션 생성 모드 설정
+                .and().httpBasic().disable()    // 기본 HTTP 인증 비활성화
+                .csrf().disable()               // CSRF 보호 비활성화 (API 서버용)
+                .formLogin().disable()          // Form 로그인 비활성화 (JWT 사용 예정 시)
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 세션 사용 안 함
     }
 
+    // 인증 매니저 구성: 사용자 정보와 패스워드 인코더 설정
     @Override
-    protected void configure(AuthenticationManagerBuilder auth)
-            throws Exception {
-        auth.userDetailsService(userDetailsService)
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
 }
