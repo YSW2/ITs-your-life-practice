@@ -28,7 +28,6 @@ public class BoardServiceImpl implements BoardService {
     public List<BoardDTO> getList() {
 
         log.info("getList..........");
-
         return mapper.getList().stream()    // BoardVO의 스트림
                 .map(BoardDTO::of)            // BoardDTO의 스트림
                 .toList();                                // List<BoardDTO> 변환
@@ -41,6 +40,7 @@ public class BoardServiceImpl implements BoardService {
         log.info("get......" + no);
 
         BoardDTO board = BoardDTO.of(mapper.get(no));
+        log.info(board);
         return Optional.ofNullable(board)
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -95,6 +95,12 @@ public class BoardServiceImpl implements BoardService {
     public BoardDTO update(BoardDTO board) {
         log.info("update......" + board);
         mapper.update(board.toVo());
+
+        // 파일 업로드 처리
+        List<MultipartFile> files = board.getFiles();
+        if (files != null && !files.isEmpty()) {
+            upload(board.getNo(), files);
+        }
 
         return get(board.getNo());
 

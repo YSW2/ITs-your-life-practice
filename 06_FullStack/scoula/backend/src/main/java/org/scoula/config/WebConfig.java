@@ -1,10 +1,8 @@
 package org.scoula.config;
 
 import org.scoula.security.config.SecurityConfig;
-import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import javax.servlet.Filter;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration;
 
@@ -31,16 +29,6 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
     protected String[] getServletMappings() {
         // 모든 요청을 DispatcherServlet이 처리
         return new String[]{"/"};
-    }
-
-    // 한글 POST 요청 인코딩 필터 설정
-    @Override
-    protected Filter[] getServletFilters() {
-        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-        characterEncodingFilter.setEncoding("UTF-8");
-        characterEncodingFilter.setForceEncoding(true);
-
-        return new Filter[]{characterEncodingFilter};
     }
 
     @Override

@@ -16,8 +16,8 @@
     </resultMap>
     <select id="get" resultMap="memberMap">
         select m.username, password, email, reg_date, update_date, auth
-        from tbl_member m
-                 left outer join tbl_member_auth a
+        from sec_db.tbl_member m
+                 left outer join sec_db.tbl_member_auth a
                                  on m.username = a.username
         where m.username = #{username}
     </select>

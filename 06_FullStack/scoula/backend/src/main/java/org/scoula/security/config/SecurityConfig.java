@@ -24,10 +24,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
@@ -52,14 +50,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         // 보안 강화를 위한 BCrypt 해시 알고리즘 사용
         return new BCryptPasswordEncoder();
-    }
-
-    // 문자셋 필터 정의
-    public CharacterEncodingFilter encodingFilter() {
-        CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
-        encodingFilter.setEncoding("UTF-8");           // 문자 인코딩 설정
-        encodingFilter.setForceEncoding(true);         // 강제 인코딩 적용
-        return encodingFilter;
     }
 
     // AuthenticationManager 빈 등록
@@ -103,7 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         /// 한글 인코딩 필터
-        http.addFilterBefore(encodingFilter(), CsrfFilter.class)
+        http
                 // 인증 예외 처리 필터 (JWT 파싱 오류 등)
                 .addFilterBefore(authenticationErrorFilter, UsernamePasswordAuthenticationFilter.class)
                 // JWT 인증 필터 (헤더에서 JWT 추출 → 인증 객체 생성)
@@ -119,9 +109,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()  // Preflight 요청 허용
-                .anyRequest().permitAll()                    // 👉 일단 모든 요청 허용 (테스트용)
+                .antMatchers(HttpMethod.POST, "/api/board/**").authenticated()
+                .antMatchers(HttpMethod.PUT, "/api/board/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/api/board/**").authenticated()
+                .anyRequest().permitAll();
 
-                .and().httpBasic().disable()    // 기본 HTTP 인증 비활성화
+        http.httpBasic().disable()    // 기본 HTTP 인증 비활성화
                 .csrf().disable()               // CSRF 보호 비활성화 (API 서버용)
                 .formLogin().disable()          // Form 로그인 비활성화 (JWT 사용 예정 시)
                 .sessionManagement()

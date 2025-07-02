@@ -27,18 +27,29 @@
     <select id="getList" resultType="BoardVO">
 		<![CDATA[
         select *
-        from tbl_board
+        from board.tbl_board
+        order by no desc
         ]]>
 	</select>
 
-    <select id="get" resultType="org.scoula.board.domain.BoardVO">
-        select *
-        from tbl_board
-        where no = #{no}
+    <select id="get" resultMap="boardMap">
+        select b.*,
+               a.no as    ano,
+               a.bno,
+               a.filename,
+               a.path,
+               a.content_type,
+               a.size,
+               a.reg_date a_reg_date
+        from board.tbl_board b
+                 left outer join board.tbl_board_attachment a
+                                 on b.no = a.bno
+        where b.no = #{no}
+        order by filename
     </select>
 
     <insert id="create">
-        insert into tbl_board (title, content, writer)
+        insert into board.tbl_board (title, content, writer)
         values (#{title}, #{content}, #{writer})
 
         <selectKey resultType="Long" keyProperty="no" keyColumn="no" order="AFTER">
@@ -47,7 +58,7 @@
     </insert>
 
     <update id="update">
-        update tbl_board
+        update board.tbl_board
         set title       = #{title},
             content     = #{content},
             writer      = #{writer},
@@ -57,31 +68,31 @@
 
     <delete id="delete">
         delete
-        from tbl_board
+        from board.tbl_board
         where no = #{no}
     </delete>
 
     <insert id="createAttachment">
-        insert into tbl_board_attachment(filename, path, content_type, size, bno)
+        insert into board.tbl_board_attachment(filename, path, content_type, size, bno)
         values (#{filename}, #{path}, #{contentType}, #{size}, #{bno})
     </insert>
 
     <select id="getAttachmentList" resultType="org.scoula.board.domain.BoardAttachmentVO">
         select *
-        from tbl_board_attachment
+        from board.tbl_board_attachment
         where bno = #{bno}
         order by filename
     </select>
 
     <select id="getAttachment" resultType="org.scoula.board.domain.BoardAttachmentVO">
         select *
-        from tbl_board_attachment
+        from board.tbl_board_attachment
         where no = #{no}
     </select>
 
     <delete id="deleteAttachment">
         delete
-        from tbl_board_attachment
+        from board.tbl_board_attachment
         where no = #{no}
     </delete>
 

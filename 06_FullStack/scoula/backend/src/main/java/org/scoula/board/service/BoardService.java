@@ -19,6 +19,4 @@ public interface BoardService {
     public BoardAttachmentVO getAttachment(Long no);
 
     public boolean deleteAttachment(Long no);
-
-
 }
